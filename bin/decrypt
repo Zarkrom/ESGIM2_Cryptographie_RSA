@@ -1,0 +1,15 @@
+# bin/bash
+
+text_param=""
+
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in --message|-m) text_param="$2" shift ;; *) ;; esac
+    shift 
+done
+
+if [ -n "$text_param" ]; then
+    docker compose run --rm rsa python3 app.py decrypt --message "$text_param"
+else
+    docker compose run --rm rsa python3 app.py decrypt
+fi

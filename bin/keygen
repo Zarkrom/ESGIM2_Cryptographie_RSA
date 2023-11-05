@@ -1,0 +1,15 @@
+# bin/bash
+
+size=""
+
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in --size|-s) size="$2" shift ;; *) ;; esac
+    shift 
+done
+
+if [ -n "$size" ]; then
+    docker compose run --rm rsa python3 app.py keygen --size "$size"
+else
+    docker compose run --rm rsa python3 app.py keygen
+fi

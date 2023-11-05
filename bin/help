@@ -1,0 +1,3 @@
+# bin/bash
+
+docker compose run --rm rsa python3 app.py help

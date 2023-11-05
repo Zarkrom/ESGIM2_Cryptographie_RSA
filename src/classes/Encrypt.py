@@ -1,31 +1,21 @@
-import Keys
-import random
+import base64
+from interface.CommandInterface import CommandInterface
+from utils.FileManager import FileManager
 
 
-class Encrypt:
-    def __init__(self, entryData):
-        self.valueIn = entryData
-        self.KeysEncrypt = Keys()
-        self.KeysEncrypt.GenerateKeys()
+class CryptCommand(CommandInterface):
+  def __init__(self):
+    self.name = "crypt"
+    self.fileManager = FileManager()
 
-    def encryptASCII(self):
-        ASCII_numbers = []
-        for character in self.valueIn:
-            valeur_ascii = ord(character)
-            ASCII_numbers.append(valeur_ascii)
+  def execute(self, args):
+    message = input("Enter the message to encrypt: ") if args.message is None else args.message
 
-        return ASCII_numbers
+    n, e = self.fileManager.load_key(is_private=False)
+    numeric_message = [ord(char) for char in message]
+    encrypted_blocks = []
+    for char_code in numeric_message:
+      encrypted_blocks.append(pow(char_code, e, n))
 
-    def transformASCII(self):
-        tabNumbers = self.encryptASCII()
-        for number in tabNumbers:
-            condense_ASCII = + number
-
-        lenMinus = len(str(self.KeysEncrypt.n)) - 1
-        rest = len(condense_ASCII) % lenMinus
-
-        decoupes = [condense_ASCII[i:i + lenMinus] for i in range(0, len(condense_ASCII), lenMinus)]
-
-
-
-
+    print(base64.b64encode(str(encrypted_blocks).encode('ascii')).decode())
+    return True

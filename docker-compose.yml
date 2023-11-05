@@ -1,0 +1,5 @@
+services:
+  rsa:
+    build: .
+    volumes:
+      - .:/srv/app
